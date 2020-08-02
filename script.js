@@ -33,35 +33,42 @@ const playDice = () => {
                 if(greenPlay.g1<0 && greenPlay.g2<0 && greenPlay.g3<0 && greenPlay.g4<0){
                     greenPlay.g1 = initial.g;
                     document.getElementById("g1").parentNode.removeChild(document.getElementById("g1"));
-                    var img = piece("green","g1")
-                    document.getElementById(greenPlay["g1"].toString()).innerHTML = img;
+                    // var img = piece("green","g1")
+                    // document.getElementById(greenPlay["g1"].toString()).innerHTML = img;
+                    finalCheck("g1");
                     dice = true;
                 }
                 break;
             case 2:
                 if(yellowPlay.y1<0 && yellowPlay.y2<0 && yellowPlay.y3<0 && yellowPlay.y4<0){
                     yellowPlay.y1 = 1;
+                    yellowPlayOnBoard.y1 = initial.y;
                     document.getElementById("y1").parentNode.removeChild(document.getElementById("y1"));
-                    var img = piece("yellow","y1")
-                    document.getElementById(initial.y.toString()).innerHTML = img;
+                    // var img = piece("yellow","y1")
+                    // document.getElementById(initial.y.toString()).innerHTML = img;
+                    finalCheck("y1");
                     dice = true;
                 }
                 break;
             case 3:
                 if(bluePlay.b1<0 && bluePlay.b2<0 && bluePlay.b3<0 && bluePlay.b4<0){
                     bluePlay.b1 = 1;
+                    bluePlayOnBoard.b1 = initial.b;
                     document.getElementById("b1").parentNode.removeChild(document.getElementById("b1"));
-                    var img = piece("blue","b1")
-                    document.getElementById(initial.b.toString()).innerHTML = img;
+                    // var img = piece("blue","b1")
+                    // document.getElementById(initial.b.toString()).innerHTML = img;
+                    finalCheck("b1");
                     dice = true;
                 }
                 break;
             case 4:
                 if(redPlay.r1<0 && redPlay.r2<0 && redPlay.r3<0 && redPlay.r4<0){
                     redPlay.r1 = 1;
+                    redPlayOnBoard.r1 = initial.r;
                     document.getElementById("r1").parentNode.removeChild(document.getElementById("r1"));
-                    var img = piece("red","r1")
-                    document.getElementById(initial.r.toString()).innerHTML = img;
+                    // var img = piece("red","r1")
+                    // document.getElementById(initial.r.toString()).innerHTML = img;
+                    finalCheck("r1");
                     dice = true;
                 }
                 break;
@@ -79,30 +86,34 @@ const play = (elementID) => {
                      if(greenPlay[elementID] === -1 && diceValue === 6){
                         greenPlay[elementID] = initial.g;
                         currentElement.parentNode.removeChild(currentElement);
-                        var img = piece("green",elementID)
-                        document.getElementById(greenPlay[elementID].toString()).innerHTML = img;
+                        // var img = piece("green",elementID)
+                        // document.getElementById(greenPlay[elementID].toString()).innerHTML = img;
+                        finalCheck(elementID);
                         dice = true;
                     }else if(greenPlay[elementID]+diceValue<=final.g && greenPlay[elementID]>0){
                         greenPlay[elementID] += diceValue;
                         currentElement.parentNode.removeChild(currentElement);
-                        var img = piece("green",elementID)
-                        document.getElementById(greenPlay[elementID].toString()).innerHTML = img;
+                        // var img = piece("green",elementID)
+                        // document.getElementById(greenPlay[elementID].toString()).innerHTML = img;
+                        finalCheck(elementID);
                         dice = true;
                     }else if(greenPlay[elementID]+diceValue>final.g && greenPlay[elementID] <= final.g){
                         var temp = greenPlay[elementID] + diceValue - final.g;
                         greenPlay[elementID] = 100+temp;
                         console.log(`++${greenPlay[elementID]}++`);
                         currentElement.parentNode.removeChild(currentElement);
-                        var img = piece("green",elementID)
-                        document.getElementById(greenPlay[elementID].toString()).innerHTML = img;
+                        // var img = piece("green",elementID)
+                        // document.getElementById(greenPlay[elementID].toString()).innerHTML = img;
+                        finalCheck(elementID);
                         dice = true;
                     }else if(greenPlay[elementID]>100){
                         if(greenPlay[elementID]+diceValue <=106){
                             greenPlay[elementID] += diceValue;
                             if(greenPlay[elementID]<106){
                                 currentElement.parentNode.removeChild(currentElement);
-                                var img = piece("green",elementID)
-                                document.getElementById(greenPlay[elementID].toString()).innerHTML = img;
+                                // var img = piece("green",elementID)
+                                // document.getElementById(greenPlay[elementID].toString()).innerHTML = img;
+                                finalCheck(elementID);
                                 dice = true;
                             }else{
                                 var counter = 0;
@@ -158,16 +169,18 @@ const play = (elementID) => {
                         yellowPlay[elementID] = 1;
                         yellowPlayOnBoard[elementID] = initial.y;
                         currentElement.parentNode.removeChild(currentElement);
-                        var img = piece("yellow",elementID)
-                        document.getElementById(initial.y.toString()).innerHTML = img;
+                        // var img = piece("yellow",elementID)
+                        // document.getElementById(initial.y.toString()).innerHTML = img;
+                        finalCheck(elementID);
                         dice = true;
                     }else if(yellowPlay[elementID]+diceValue<=maxCell && yellowPlay[elementID]>0){
                         yellowPlay[elementID] += diceValue;   
                         const finalVal = (yellowPlay[elementID]>38)?yellowPlay[elementID]-38:14+yellowPlay[elementID];
                         yellowPlayOnBoard[elementID] = finalVal;
                         currentElement.parentNode.removeChild(currentElement);
-                        var img = piece("yellow",elementID)
-                        document.getElementById(finalVal.toString()).innerHTML = img;
+                        // var img = piece("yellow",elementID)
+                        // document.getElementById(finalVal.toString()).innerHTML = img;
+                        finalCheck(elementID);
                         dice = true;
                     }else if(yellowPlay[elementID]+diceValue>maxCell && yellowPlay[elementID] <= maxCell){
                         var temp = yellowPlay[elementID] + diceValue - maxCell;
@@ -175,8 +188,9 @@ const play = (elementID) => {
                         const finalVal = 200+temp;
                         yellowPlayOnBoard[elementID] = finalVal;
                         currentElement.parentNode.removeChild(currentElement);
-                        var img = piece("yellow",elementID)
-                        document.getElementById(finalVal.toString()).innerHTML = img;
+                        // var img = piece("yellow",elementID)
+                        // document.getElementById(finalVal.toString()).innerHTML = img;
+                        finalCheck(elementID);
                         dice = true;
                     }else if(yellowPlay[elementID]>maxCell){
                         if(yellowPlay[elementID]+diceValue <=homeCell){
@@ -185,8 +199,9 @@ const play = (elementID) => {
                                 const finalVal = 200+(yellowPlay[elementID]-maxCell);
                                 yellowPlayOnBoard[elementID] = finalVal;
                                 currentElement.parentNode.removeChild(currentElement);
-                                var img = piece("yellow",elementID)
-                                document.getElementById(finalVal.toString()).innerHTML = img;
+                                // var img = piece("yellow",elementID)
+                                // document.getElementById(finalVal.toString()).innerHTML = img;
+                                finalCheck(elementID);
                                 dice = true;
                             }else{
                                 var counter = 0;
@@ -244,16 +259,18 @@ const play = (elementID) => {
                         bluePlay[elementID] = 1;
                         bluePlayOnBoard[elementID] = initial.b;
                         currentElement.parentNode.removeChild(currentElement);
-                        var img = piece("blue",elementID)
-                        document.getElementById(initial.b.toString()).innerHTML = img;
+                        // var img = piece("blue",elementID)
+                        // document.getElementById(initial.b.toString()).innerHTML = img;
+                        finalCheck(elementID);
                         dice = true;
                     }else if(bluePlay[elementID]+diceValue<=maxCell && bluePlay[elementID]>0){
                         bluePlay[elementID] += diceValue;
                         const finalVal = (bluePlay[elementID]>25)?bluePlay[elementID]-25:27+bluePlay[elementID];
                         bluePlayOnBoard[elementID] = finalVal;
                         currentElement.parentNode.removeChild(currentElement);
-                        var img = piece("blue",elementID)
-                        document.getElementById(finalVal.toString()).innerHTML = img;
+                        // var img = piece("blue",elementID)
+                        // document.getElementById(finalVal.toString()).innerHTML = img;
+                        finalCheck(elementID);
                         dice = true;
                     }else if(bluePlay[elementID]+diceValue>maxCell && bluePlay[elementID] <= maxCell){
                         var temp = bluePlay[elementID] + diceValue - maxCell;
@@ -261,8 +278,9 @@ const play = (elementID) => {
                         const finalVal = 300+temp;
                         bluePlayOnBoard[elementID] = finalVal;
                         currentElement.parentNode.removeChild(currentElement);
-                        var img = piece("blue",elementID)
-                        document.getElementById(finalVal.toString()).innerHTML = img;
+                        // var img = piece("blue",elementID)
+                        // document.getElementById(finalVal.toString()).innerHTML = img;
+                        finalCheck(elementID);
                         dice = true;
                     }else if(bluePlay[elementID]>maxCell){
                         if(bluePlay[elementID]+diceValue <=homeCell){
@@ -271,8 +289,9 @@ const play = (elementID) => {
                                 const finalVal = 300+(bluePlay[elementID]-maxCell);
                                 bluePlayOnBoard[elementID] = finalVal;
                                 currentElement.parentNode.removeChild(currentElement);
-                                var img = piece("blue",elementID)
-                                document.getElementById(finalVal.toString()).innerHTML = img;
+                                // var img = piece("blue",elementID)
+                                // document.getElementById(finalVal.toString()).innerHTML = img;
+                                finalCheck(elementID);
                                 dice = true;
                             }else{
                                 var counter = 0;
@@ -330,16 +349,18 @@ const play = (elementID) => {
                         redPlay[elementID] = 1;
                         redPlayOnBoard[elementID] = initial.r;
                         currentElement.parentNode.removeChild(currentElement);
-                        var img = piece("red",elementID)
-                        document.getElementById(initial.r.toString()).innerHTML = img;
+                        // var img = piece("red",elementID)
+                        // document.getElementById(initial.r.toString()).innerHTML = img;
+                        finalCheck(elementID);
                         dice = true;
                     }else if(redPlay[elementID]+diceValue<=maxCell && redPlay[elementID]>0){
                         redPlay[elementID] += diceValue;
                         const finalVal = (redPlay[elementID]>12)?redPlay[elementID]-12:40+redPlay[elementID];
                         redPlayOnBoard[elementID] = finalVal;
                         currentElement.parentNode.removeChild(currentElement);
-                        var img = piece("red",elementID)
-                        document.getElementById(finalVal.toString()).innerHTML = img;
+                        // var img = piece("red",elementID)
+                        // document.getElementById(finalVal.toString()).innerHTML = img;
+                        finalCheck(elementID);
                         dice = true;
                     }else if(redPlay[elementID]+diceValue>maxCell && redPlay[elementID] <= maxCell){
                         var temp = redPlay[elementID] + diceValue - maxCell;
@@ -347,8 +368,9 @@ const play = (elementID) => {
                         const finalVal = 400+temp;
                         redPlayOnBoard[elementID] = finalVal;
                         currentElement.parentNode.removeChild(currentElement);
-                        var img = piece("red",elementID)
-                        document.getElementById(finalVal.toString()).innerHTML = img;
+                        // var img = piece("red",elementID)
+                        // document.getElementById(finalVal.toString()).innerHTML = img;
+                        finalCheck(elementID);
                         dice = true;
                     }else if(redPlay[elementID]>maxCell){
                         if(redPlay[elementID]+diceValue <=homeCell){
@@ -357,8 +379,9 @@ const play = (elementID) => {
                                 const finalVal = 400+(redPlay[elementID]-maxCell);
                                 redPlayOnBoard[elementID] = finalVal;
                                 currentElement.parentNode.removeChild(currentElement);
-                                var img = piece("red",elementID)
-                                document.getElementById(finalVal.toString()).innerHTML = img;
+                                // var img = piece("red",elementID)
+                                // document.getElementById(finalVal.toString()).innerHTML = img;
+                                finalCheck(elementID);
                                 dice = true;
                             }else{
                                 var counter = 0;
@@ -445,34 +468,35 @@ const checkAvailability = () => {
 const isItSafeCell = (eId) => {
     switch(eId.substr(0, 1)){
         case 'g':
-            safeCells.forEach(safe => {
-                if(greenPlay[eId]===safe){
+            for(var i=0;i<safeCells.length;i++) {
+                if(greenPlay[eId]===safeCells[i]){
                     return true;
                 } 
-            });
-            return false;
+            };
+            break;
         case 'y':
-            safeCells.forEach(safe => {
-                if(yellowPlayOnBoard[eId]===safe){
+            for(var i=0;i<safeCells.length;i++){
+                if(yellowPlayOnBoard[eId]===safeCells[i]){
                     return true;
                 } 
-            });
-            return false;
+            };
+            break;
         case 'b':
-            safeCells.forEach(safe => {
-                if(bluePlayOnBoard[eId]===safe){
+            for(var i=0;i<safeCells.length;i++) {
+                if(bluePlayOnBoard[eId]===safeCells[i]){
                     return true;
                 } 
-            });
-            return false;
+            };
+            break;
         case 'r':
-            safeCells.forEach(safe => {
-                if(redPlayOnBoard[eId]===safe){
+            for(var i=0;i<safeCells.length;i++) {
+                if(redPlayOnBoard[eId]===safeCells[i]){
                     return true;
                 } 
-            });
-            return false;
+            };
+            break;
     }
+    return false;
 }
 
 const isSomeoneInside = (eId) => {
@@ -567,7 +591,7 @@ const isItMe = (eId) => {
 
 const whoAndHowMany = (eId) => {
     var temp = {g:[],y:[],b:[],r:[]};
-    switch(id.substr(0, 1)){
+    switch(eId.substr(0, 1)){
         case "g":
             var counter = [0,0,0]
             for(var i=1; i<5; i++){
@@ -635,13 +659,13 @@ const whoAndHowMany = (eId) => {
             };
             for(var i=0;i<3;i++){
                 if(counter[i]!==0){
-                    temp.b[0] = (i===0)?"g":((i===1)?"y":"b");
-                    temp.b[1] = counter[i];
+                    temp.r[0] = (i===0)?"g":((i===1)?"y":"b");
+                    temp.r[1] = counter[i];
                 }
             }
             break;
     }
-    return temp[id.substr(0, 1)]
+    return temp[eId.substr(0, 1)]
 }
 
 const finalCheck = (id) =>{
@@ -884,7 +908,7 @@ const finalCheck = (id) =>{
         var finalVal = (id.substr(0, 1)==="g")?greenPlay[id]:((id.substr(0, 1)==="y")?yellowPlayOnBoard[id]:((id.substr(0, 1)==="b")?bluePlayOnBoard[id]:redPlayOnBoard[id]))
         document.getElementById(finalVal.toString()).innerHTML = img;
     }else if(!isItSafeCell(id) && isSomeoneInside(id)){
-        if(isItMe){
+        if(isItMe(id)){
             switch(id.substr(0, 1)){
                 case 'g':
                     var cell = document.getElementById(greenPlay[id].toString());
