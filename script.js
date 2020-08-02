@@ -468,59 +468,33 @@ const checkAvailability = () => {
 const isItSafeCell = (eId) => {
     switch(eId.substr(0, 1)){
         case 'g':
-<<<<<<< Updated upstream
             for(var i=0;i<safeCells.length;i++) {
-=======
-            for(var i=0; i<safeCells.length; i++) {
->>>>>>> Stashed changes
                 if(greenPlay[eId]===safeCells[i]){
                     return true;
                 } 
             };
-<<<<<<< Updated upstream
             break;
         case 'y':
             for(var i=0;i<safeCells.length;i++){
-=======
-            return false;
-        case 'y':
-            for(var i=0; i<safeCells.length; i++) {
->>>>>>> Stashed changes
                 if(yellowPlayOnBoard[eId]===safeCells[i]){
                     return true;
                 } 
             };
-<<<<<<< Updated upstream
             break;
         case 'b':
             for(var i=0;i<safeCells.length;i++) {
-=======
-            return false;
-        case 'b':
-            for(var i=0; i<safeCells.length; i++) {
->>>>>>> Stashed changes
                 if(bluePlayOnBoard[eId]===safeCells[i]){
                     return true;
                 } 
             };
-<<<<<<< Updated upstream
             break;
         case 'r':
             for(var i=0;i<safeCells.length;i++) {
-=======
-            return false;
-        case 'r':
-            for(var i=0; i<safeCells.length; i++) {
->>>>>>> Stashed changes
                 if(redPlayOnBoard[eId]===safeCells[i]){
                     return true;
                 } 
             };
-<<<<<<< Updated upstream
             break;
-=======
-            return false;
->>>>>>> Stashed changes
     }
     return false;
 }
@@ -692,91 +666,6 @@ const whoAndHowMany = (eId) => {
             break;
     }
     return temp[eId.substr(0, 1)]
-<<<<<<< Updated upstream
-=======
-}
-
-const position = (cell,cellChildrens,color,id) => {
-    switch(cellChildrens.length){
-        case 1:
-            var img = piece(color,id);
-            cell.innerHTML += img;
-            cellChildrens[0].style.width = "60%";
-            cellChildrens[0].style.height = "60%";
-            cellChildrens[1].style.width = "60%";
-            cellChildrens[1].style.height = "60%";
-            cellChildrens[1].style.right = "0";
-            cellChildrens[1].style.bottom = "0";
-            break;
-        case 2:
-            var img = piece(color,id);
-            cell.innerHTML += img;
-            cellChildrens[0].style.width = "60%";
-            cellChildrens[0].style.height = "60%";
-            cellChildrens[1].style.width = "60%";
-            cellChildrens[1].style.height = "60%";
-            cellChildrens[1].style.right = "0";
-            cellChildrens[1].style.bottom = "0";
-            cellChildrens[2].style.width = "60%";
-            cellChildrens[2].style.height = "60%";
-            cellChildrens[2].style.right = "0";
-            break;
-        case 3:
-            var img = piece(color,id);
-            cell.innerHTML += img;
-            cellChildrens[0].style.width = "60%";
-            cellChildrens[0].style.height = "60%";
-            cellChildrens[1].style.width = "60%";
-            cellChildrens[1].style.height = "60%";
-            cellChildrens[1].style.right = "0";
-            cellChildrens[1].style.bottom = "0";
-            cellChildrens[2].style.width = "60%";
-            cellChildrens[2].style.height = "60%";
-            cellChildrens[2].style.right = "0";
-            cellChildrens[3].style.width = "60%";
-            cellChildrens[3].style.height = "60%";
-            cellChildrens[3].style.bottom = "0";
-            break;
-        case 4:
-            var img = piece(color,id);
-            cell.innerHTML += img;
-            cellChildrens[0].style.width = "60%";
-            cellChildrens[0].style.height = "60%";
-            cellChildrens[1].style.width = "60%";
-            cellChildrens[1].style.height = "60%";
-            cellChildrens[1].style.right = "0";
-            cellChildrens[1].style.bottom = "0";
-            cellChildrens[2].style.width = "60%";
-            cellChildrens[2].style.height = "60%";
-            cellChildrens[2].style.right = "0";
-            cellChildrens[3].style.width = "60%";
-            cellChildrens[3].style.height = "60%";
-            cellChildrens[3].style.bottom = "0";
-            cellChildrens[4].style.width = "60%";
-            cellChildrens[4].style.height = "60%";
-            cellChildrens[4].style.bottom = "20%";
-            cellChildrens[4].style.left = "20%";
-            break;
-        case 5:
-            var img = piece(color,id);
-            cell.innerHTML += img;
-            cellChildrens[1].style.bottom = "20%";
-            cellChildrens[1].style.left = "0";
-            cellChildrens[1].style.removeProperty('right')
-            cellChildrens[2].style.bottom = "0";
-            cellChildrens[2].style.left = "0";
-            cellChildrens[2].style.removeProperty('right')
-            cellChildrens[3].style.right = "0";
-            cellChildrens[3].style.removeProperty('bottom')
-            cellChildrens[4].style.right = "0";
-            cellChildrens[4].style.removeProperty('left')
-            cellChildrens[5].style.width = "60%";
-            cellChildrens[5].style.height = "60%";
-            cellChildrens[5].style.bottom = "0";
-            cellChildrens[5].style.right = "0";
-            break;
-    }
->>>>>>> Stashed changes
 }
 
 const finalCheck = (id) =>{
@@ -785,22 +674,226 @@ const finalCheck = (id) =>{
             case 'g':
                 var cell = document.getElementById(greenPlay[id].toString());
                 var cellChildrens = cell.children;
-                position(cell,cellChildrens,"green",id);
+                switch(cellChildrens.length){
+                    case 1:
+                        var img = piece("green",id);
+                        cell.innerHTML += img;
+                        cellChildrens[0].style.width = "60%";
+                        cellChildrens[0].style.height = "60%";
+                        cellChildrens[1].style.width = "60%";
+                        cellChildrens[1].style.height = "60%";
+                        cellChildrens[1].style.right = "0";
+                        cellChildrens[1].style.bottom = "0";
+                        break;
+                    case 2:
+                        var img = piece("green",id);
+                        cell.innerHTML += img;
+                        cellChildrens[2].style.width = "60%";
+                        cellChildrens[2].style.height = "60%";
+                        cellChildrens[2].style.right = "0";
+                        break;
+                    case 3:
+                        var img = piece("green",id);
+                        cell.innerHTML += img;
+                        cellChildrens[3].style.width = "60%";
+                        cellChildrens[3].style.height = "60%";
+                        cellChildrens[3].style.bottom = "0";
+                        break;
+                    case 4:
+                        var img = piece("green",id);
+                        cell.innerHTML += img;
+                        cellChildrens[4].style.width = "60%";
+                        cellChildrens[4].style.height = "60%";
+                        cellChildrens[4].style.bottom = "20%";
+                        cellChildrens[4].style.left = "20%";
+                        break;
+                    case 5:
+                        var img = piece("green",id);
+                        cell.innerHTML += img;
+                        cellChildrens[1].style.bottom = "20%";
+                        cellChildrens[1].style.left = "0";
+                        cellChildrens[1].style.removeProperty('right')
+                        cellChildrens[2].style.bottom = "0";
+                        cellChildrens[2].style.left = "0";
+                        cellChildrens[2].style.removeProperty('right')
+                        cellChildrens[3].style.right = "0";
+                        cellChildrens[3].style.removeProperty('bottom')
+                        cellChildrens[4].style.right = "0";
+                        cellChildrens[4].style.removeProperty('left')
+                        cellChildrens[5].style.width = "60%";
+                        cellChildrens[5].style.height = "60%";
+                        cellChildrens[5].style.bottom = "0";
+                        cellChildrens[5].style.right = "0";
+                        break;
+                }
                 break;
             case 'y':
                 var cell = document.getElementById(yellowPlayOnBoard[id].toString());
                 var cellChildrens = cell.children;
-                position(cell,cellChildrens,"yellow",id);
+                switch(cellChildrens.length){
+                    case 1:
+                        var img = piece("yellow",id);
+                        cell.innerHTML += img;
+                        cellChildrens[0].style.width = "60%";
+                        cellChildrens[0].style.height = "60%";
+                        cellChildrens[1].style.width = "60%";
+                        cellChildrens[1].style.height = "60%";
+                        cellChildrens[1].style.right = "0";
+                        cellChildrens[1].style.bottom = "0";
+                        break;
+                    case 2:
+                        var img = piece("yellow",id);
+                        cell.innerHTML += img;
+                        cellChildrens[2].style.width = "60%";
+                        cellChildrens[2].style.height = "60%";
+                        cellChildrens[2].style.right = "0";
+                        break;
+                    case 3:
+                        var img = piece("yellow",id);
+                        cell.innerHTML += img;
+                        cellChildrens[3].style.width = "60%";
+                        cellChildrens[3].style.height = "60%";
+                        cellChildrens[3].style.bottom = "0";
+                        break;
+                    case 4:
+                        var img = piece("yellow",id);
+                        cell.innerHTML += img;
+                        cellChildrens[4].style.width = "60%";
+                        cellChildrens[4].style.height = "60%";
+                        cellChildrens[4].style.bottom = "20%";
+                        cellChildrens[4].style.left = "20%";
+                        break;
+                    case 5:
+                        var img = piece("yellow",id);
+                        cell.innerHTML += img;
+                        cellChildrens[1].style.bottom = "20%";
+                        cellChildrens[1].style.left = "0";
+                        cellChildrens[1].style.removeProperty('right')
+                        cellChildrens[2].style.bottom = "0";
+                        cellChildrens[2].style.left = "0";
+                        cellChildrens[2].style.removeProperty('right')
+                        cellChildrens[3].style.right = "0";
+                        cellChildrens[3].style.removeProperty('bottom')
+                        cellChildrens[4].style.right = "0";
+                        cellChildrens[4].style.removeProperty('left')
+                        cellChildrens[5].style.width = "60%";
+                        cellChildrens[5].style.height = "60%";
+                        cellChildrens[5].style.bottom = "0";
+                        cellChildrens[5].style.right = "0";
+                        break;
+                }
                 break;
             case 'b':
                 var cell = document.getElementById(bluePlayOnBoard[id].toString());
                 var cellChildrens = cell.children;
-                position(cell,cellChildrens,"blue",id);
+                switch(cellChildrens.length){
+                    case 1:
+                        var img = piece("blue",id);
+                        cell.innerHTML += img;
+                        cellChildrens[0].style.width = "60%";
+                        cellChildrens[0].style.height = "60%";
+                        cellChildrens[1].style.width = "60%";
+                        cellChildrens[1].style.height = "60%";
+                        cellChildrens[1].style.right = "0";
+                        cellChildrens[1].style.bottom = "0";
+                        break;
+                    case 2:
+                        var img = piece("blue",id);
+                        cell.innerHTML += img;
+                        cellChildrens[2].style.width = "60%";
+                        cellChildrens[2].style.height = "60%";
+                        cellChildrens[2].style.right = "0";
+                        break;
+                    case 3:
+                        var img = piece("blue",id);
+                        cell.innerHTML += img;
+                        cellChildrens[3].style.width = "60%";
+                        cellChildrens[3].style.height = "60%";
+                        cellChildrens[3].style.bottom = "0";
+                        break;
+                    case 4:
+                        var img = piece("blue",id);
+                        cell.innerHTML += img;
+                        cellChildrens[4].style.width = "60%";
+                        cellChildrens[4].style.height = "60%";
+                        cellChildrens[4].style.bottom = "20%";
+                        cellChildrens[4].style.left = "20%";
+                        break;
+                    case 5:
+                        var img = piece("blue",id);
+                        cell.innerHTML += img;
+                        cellChildrens[1].style.bottom = "20%";
+                        cellChildrens[1].style.left = "0";
+                        cellChildrens[1].style.removeProperty('right')
+                        cellChildrens[2].style.bottom = "0";
+                        cellChildrens[2].style.left = "0";
+                        cellChildrens[2].style.removeProperty('right')
+                        cellChildrens[3].style.right = "0";
+                        cellChildrens[3].style.removeProperty('bottom')
+                        cellChildrens[4].style.right = "0";
+                        cellChildrens[4].style.removeProperty('left')
+                        cellChildrens[5].style.width = "60%";
+                        cellChildrens[5].style.height = "60%";
+                        cellChildrens[5].style.bottom = "0";
+                        cellChildrens[5].style.right = "0";
+                        break;
+                }
                 break;
             case 'r':
                 var cell = document.getElementById(redPlayOnBoard[id].toString());
                 var cellChildrens = cell.children;
-                position(cell,cellChildrens,"red",id);
+                switch(cellChildrens.length){
+                    case 1:
+                        var img = piece("red",id);
+                        cell.innerHTML += img;
+                        cellChildrens[0].style.width = "60%";
+                        cellChildrens[0].style.height = "60%";
+                        cellChildrens[1].style.width = "60%";
+                        cellChildrens[1].style.height = "60%";
+                        cellChildrens[1].style.right = "0";
+                        cellChildrens[1].style.bottom = "0";
+                        break;
+                    case 2:
+                        var img = piece("red",id);
+                        cell.innerHTML += img;
+                        cellChildrens[2].style.width = "60%";
+                        cellChildrens[2].style.height = "60%";
+                        cellChildrens[2].style.right = "0";
+                        break;
+                    case 3:
+                        var img = piece("red",id);
+                        cell.innerHTML += img;
+                        cellChildrens[3].style.width = "60%";
+                        cellChildrens[3].style.height = "60%";
+                        cellChildrens[3].style.bottom = "0";
+                        break;
+                    case 4:
+                        var img = piece("red",id);
+                        cell.innerHTML += img;
+                        cellChildrens[4].style.width = "60%";
+                        cellChildrens[4].style.height = "60%";
+                        cellChildrens[4].style.bottom = "20%";
+                        cellChildrens[4].style.left = "20%";
+                        break;
+                    case 5:
+                        var img = piece("red",id);
+                        cell.innerHTML += img;
+                        cellChildrens[1].style.bottom = "20%";
+                        cellChildrens[1].style.left = "0";
+                        cellChildrens[1].style.removeProperty('right')
+                        cellChildrens[2].style.bottom = "0";
+                        cellChildrens[2].style.left = "0";
+                        cellChildrens[2].style.removeProperty('right')
+                        cellChildrens[3].style.right = "0";
+                        cellChildrens[3].style.removeProperty('bottom')
+                        cellChildrens[4].style.right = "0";
+                        cellChildrens[4].style.removeProperty('left')
+                        cellChildrens[5].style.width = "60%";
+                        cellChildrens[5].style.height = "60%";
+                        cellChildrens[5].style.bottom = "0";
+                        cellChildrens[5].style.right = "0";
+                        break;
+                }
                 break;
                                     
         }
@@ -820,21 +913,122 @@ const finalCheck = (id) =>{
                 case 'g':
                     var cell = document.getElementById(greenPlay[id].toString());
                     var cellChildrens = cell.children;
-                    position(cell,cellChildrens,"green",id);
+                    switch(cellChildrens.length){
+                        case 1:
+                            var img = piece("green",id);
+                            cell.innerHTML += img;
+                            cellChildrens[0].style.width = "60%";
+                            cellChildrens[0].style.height = "60%";
+                            cellChildrens[1].style.width = "60%";
+                            cellChildrens[1].style.height = "60%";
+                            cellChildrens[1].style.right = "0";
+                            cellChildrens[1].style.bottom = "0";
+                            break;
+                        case 2:
+                            var img = piece("green",id);
+                            cell.innerHTML += img;
+                            cellChildrens[2].style.width = "60%";
+                            cellChildrens[2].style.height = "60%";
+                            cellChildrens[2].style.right = "0";
+                            break;
+                        case 3:
+                            var img = piece("green",id);
+                            cell.innerHTML += img;
+                            cellChildrens[3].style.width = "60%";
+                            cellChildrens[3].style.height = "60%";
+                            cellChildrens[3].style.bottom = "0";
+                            break;
+                    }
+                    break;
                 case 'y':
                     var cell = document.getElementById(yellowPlayOnBoard[id].toString());
                     var cellChildrens = cell.children;
-                    position(cell,cellChildrens,"yellow",id);
+                    switch(cellChildrens.length){
+                        case 1:
+                            var img = piece("yellow",id);
+                            cell.innerHTML += img;
+                            cellChildrens[0].style.width = "60%";
+                            cellChildrens[0].style.height = "60%";
+                            cellChildrens[1].style.width = "60%";
+                            cellChildrens[1].style.height = "60%";
+                            cellChildrens[1].style.right = "0";
+                            cellChildrens[1].style.bottom = "0";
+                            break;
+                        case 2:
+                            var img = piece("yellow",id);
+                            cell.innerHTML += img;
+                            cellChildrens[2].style.width = "60%";
+                            cellChildrens[2].style.height = "60%";
+                            cellChildrens[2].style.right = "0";
+                            break;
+                        case 3:
+                            var img = piece("yellow",id);
+                            cell.innerHTML += img;
+                            cellChildrens[3].style.width = "60%";
+                            cellChildrens[3].style.height = "60%";
+                            cellChildrens[3].style.bottom = "0";
+                            break;
+                    }
                     break;
                 case 'b':
                     var cell = document.getElementById(bluePlayOnBoard[id].toString());
                     var cellChildrens = cell.children;
-                    position(cell,cellChildrens,"blue",id);
+                    switch(cellChildrens.length){
+                        case 1:
+                            var img = piece("blue",id);
+                            cell.innerHTML += img;
+                            cellChildrens[0].style.width = "60%";
+                            cellChildrens[0].style.height = "60%";
+                            cellChildrens[1].style.width = "60%";
+                            cellChildrens[1].style.height = "60%";
+                            cellChildrens[1].style.right = "0";
+                            cellChildrens[1].style.bottom = "0";
+                            break;
+                        case 2:
+                            var img = piece("blue",id);
+                            cell.innerHTML += img;
+                            cellChildrens[2].style.width = "60%";
+                            cellChildrens[2].style.height = "60%";
+                            cellChildrens[2].style.right = "0";
+                            break;
+                        case 3:
+                            var img = piece("blue",id);
+                            cell.innerHTML += img;
+                            cellChildrens[3].style.width = "60%";
+                            cellChildrens[3].style.height = "60%";
+                            cellChildrens[3].style.bottom = "0";
+                            break;
+                    }
                     break;
                 case 'r':
                     var cell = document.getElementById(redPlayOnBoard[id].toString());
                     var cellChildrens = cell.children;
-                    position(cell,cellChildrens,"red",id);
+                    switch(cellChildrens.length){
+                        case 1:
+                            var img = piece("red",id);
+                            cell.innerHTML += img;
+                            cellChildrens[0].style.width = "60%";
+                            cellChildrens[0].style.height = "60%";
+                            cellChildrens[1].style.width = "60%";
+                            cellChildrens[1].style.height = "60%";
+                            cellChildrens[1].style.right = "0";
+                            cellChildrens[1].style.bottom = "0";
+                            break;
+                        case 2:
+                            var img = piece("red",id);
+                            cell.innerHTML += img;
+                            cellChildrens[2].style.width = "60%";
+                            cellChildrens[2].style.height = "60%";
+                            cellChildrens[2].style.right = "0";
+                            break;
+                        case 3:
+                            var img = piece("red",id);
+                            cell.innerHTML += img;
+                            cellChildrens[3].style.width = "60%";
+                            cellChildrens[3].style.height = "60%";
+                            cellChildrens[3].style.bottom = "0";
+                            break;
+                    }
                     break;
             }
         }else{
@@ -891,7 +1085,6 @@ const finalCheck = (id) =>{
                 housePosition.innerHTML = deadImg;
                 var img = piece(temp[id.substr(0, 1)],id);
                 document.getElementById(currentCellVel).innerHTML = img;
-                diceValue = 7;
 
             }else if(whoIsInside[1]>1 && whoIsInside[1]===2){
                 var temp = {g:"green",y:"yellow",b:"blue",r:"red"};
