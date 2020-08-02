@@ -116,11 +116,86 @@
 }
 
 .play {
-    margin: auto;
-    width: 400px;
+    margin: 0 auto;
+    width: 500px;
     text-align: center;
+    position: relative;
 }
 #dice {
-    width: 40%;
+    width: 30%;
+    margin-left: auto;
+    margin-right: auto;
+}
+.text{
+    position: absolute;
+    z-index: 999;
+    margin: auto auto;
+    left: 0;
+    right: 0;
+    top: 50%; /* Adjust this value to move the positioned div up and down */
+    text-align: center;
+    width: 20%; /* Set the width of the positioned div */
+    background-color: #ffffff;
+    font-size: .8em;
+    border-radius: .5em;
+    visibility: visible;
+}
 
+.score{
+    width: 35%;
+    height: 35%;
+    position: absolute;
+}
+.score img {
+    position: absolute;
+    height: 100%;
+
+}
+.score .scoreVal {
+    position: absolute;
+    top: 20%;
+}
+
+
+
+.player1{
+    left: 0;
+}
+.player1 img{
+    left: 0;
+}
+.player1 .scoreVal{
+    left: 60%;
+}
+
+.player2{
+    right: 0;
+}
+.player2 img{
+    right: 0;
+}
+.player2 .scoreVal{
+    right: 60%;
+}
+
+.player3{
+    right: 0;
+    bottom: 0;
+}
+.player3 img{
+    right: 0;
+}
+.player3 .scoreVal{
+    right: 60%;
+}
+
+.player4{
+    left: 0;
+    bottom: 0;
+}
+.player4 img{
+    left: 0;
+}
+.player4 .scoreVal{
+    left: 60%;
 }

@@ -131,8 +131,15 @@
         <div class="cells" id="52" style="top: 46.66%;left:0;"></div>
     </div>  
     <div class="play">
-        <h1>Player 1</h1>
-        <img src="img/red.png" onclick="playDice()" id="dice" alt="">
+        <h1 id="playerName">Player 1</h1>
+        <div class="score player1"><img src="img/green.png"><div class="scoreVal"><h1 id="player1Score">0</h1></div></div>
+        <div class="score player2"><img src="img/yellow.png"><div class="scoreVal"><h1 id="player2Score">0</h1></div></div>
+        <img src="img/dice1.png" onclick="playDice()" id="dice" alt="">
+        <div class="text" onclick="playDice()" id="rollMe">
+            <h1>Roll Me</h1>
+        </div>
+        <div class="score player3"><img src="img/blue.png"><div class="scoreVal"><h1 id="player3Score">0</h1></div></div>
+        <div class="score player4"><img src="img/red.png"><div class="scoreVal"><h1 id="player4Score">0</h1></div></div>
     </div>
     <script src="script.js"></script>
 </body>

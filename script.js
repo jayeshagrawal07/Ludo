@@ -1,5 +1,6 @@
 
 var playerNo = [1,2,3,4];
+var piecesInHome = {g:0, y:0, b:0, r:0};
 var activePlayerNo = 0;
 var dice = true;
 var diceValue = 0;
@@ -15,65 +16,89 @@ const initial = {g: 2, y: 15, b: 28, r: 41}
 const final = {g: 52, y: 13, b: 26, r: 39}
 const maxCell = 51;
 const homeCell = 57;
-
+var rollMe = document.getElementById("rollMe");
+var threeSixCheck = [0,0,0];
 var piece = (color,id) => {return `<img src="img/${color}.png" id="${id}" onclick="play(this.id)" style="width: 100%;height: 100%;position: absolute;" alt=""/>`}
-
+var playerName = document.getElementById("playerName");
+playerName.innerHTML = "Green";
 const playDice = () => {
     if(dice){
-        activePlayerNo = (diceValue===0)?1:((diceValue===6)?activePlayerNo:(((activePlayerNo+1)>4)?1:activePlayerNo+1));
+        rollMe.style.visibility = "hidden";
+        var counter = 1;
+        const animFunction = () => {
+            diceAnimation(counter);
+            counter=(counter<6)?counter+1:1;
+        }
+        const anim = setInterval(animFunction,100);
+        activePlayerNo = (diceValue===0)?1:((diceValue===6 || diceValue===7)?activePlayerNo:(((activePlayerNo+1)>4)?1:activePlayerNo+1));
         diceValue = Math.floor((Math.random()*6)+1)
+        if(diceValue===6){
+            if(activePlayerNo===threeSixCheck[0]){
+                if(threeSixCheck[1]===6&&threeSixCheck[2]===6){
+                    dice=true;
+                    diceValue = 2;
+                    changeName(activePlayerNo);
+                    alert("You got three sixes in row");
+                }else{
+                    threeSixCheck[2] = diceValue;
+                }
+            }else{
+                threeSixCheck[0] = activePlayerNo;
+                threeSixCheck[1] = diceValue;
+                threeSixCheck[2] = 0;
+            }
+        }
+        setTimeout(()=>{
+            clearInterval(anim);
+            var diceImg = document.getElementById("dice");
+            diceImg.src = `img/dice${diceValue}.png`;
+            checkAvailability();
+            if(diceValue===6){
+                switch(activePlayerNo){
+                    case 1:
+                        if(greenPlay.g1<0 && greenPlay.g2<0 && greenPlay.g3<0 && greenPlay.g4<0){
+                            greenPlay.g1 = initial.g;
+                            document.getElementById("g1").parentNode.removeChild(document.getElementById("g1"));
+                            finalCheck("g1");
+                            dice = true;
+                        }
+                        break;
+                    case 2:
+                        if(yellowPlay.y1<0 && yellowPlay.y2<0 && yellowPlay.y3<0 && yellowPlay.y4<0){
+                            yellowPlay.y1 = 1;
+                            yellowPlayOnBoard.y1 = initial.y;
+                            document.getElementById("y1").parentNode.removeChild(document.getElementById("y1"));
+                            finalCheck("y1");
+                            dice = true;
+                        }
+                        break;
+                    case 3:
+                        if(bluePlay.b1<0 && bluePlay.b2<0 && bluePlay.b3<0 && bluePlay.b4<0){
+                            bluePlay.b1 = 1;
+                            bluePlayOnBoard.b1 = initial.b;
+                            document.getElementById("b1").parentNode.removeChild(document.getElementById("b1"));
+                            finalCheck("b1");
+                            dice = true;
+                        }
+                        break;
+                    case 4:
+                        if(redPlay.r1<0 && redPlay.r2<0 && redPlay.r3<0 && redPlay.r4<0){
+                            redPlay.r1 = 1;
+                            redPlayOnBoard.r1 = initial.r;
+                            document.getElementById("r1").parentNode.removeChild(document.getElementById("r1"));
+                            finalCheck("r1");
+                            dice = true;
+                        }
+                        break;
+                }
+            }
+        },2000);
         dice = false;
     }
-    checkAvailability();
+    
     console.log(activePlayerNo);
     console.log(diceValue);
-    if(diceValue===6){
-        switch(activePlayerNo){
-            case 1:
-                if(greenPlay.g1<0 && greenPlay.g2<0 && greenPlay.g3<0 && greenPlay.g4<0){
-                    greenPlay.g1 = initial.g;
-                    document.getElementById("g1").parentNode.removeChild(document.getElementById("g1"));
-                    // var img = piece("green","g1")
-                    // document.getElementById(greenPlay["g1"].toString()).innerHTML = img;
-                    finalCheck("g1");
-                    dice = true;
-                }
-                break;
-            case 2:
-                if(yellowPlay.y1<0 && yellowPlay.y2<0 && yellowPlay.y3<0 && yellowPlay.y4<0){
-                    yellowPlay.y1 = 1;
-                    yellowPlayOnBoard.y1 = initial.y;
-                    document.getElementById("y1").parentNode.removeChild(document.getElementById("y1"));
-                    // var img = piece("yellow","y1")
-                    // document.getElementById(initial.y.toString()).innerHTML = img;
-                    finalCheck("y1");
-                    dice = true;
-                }
-                break;
-            case 3:
-                if(bluePlay.b1<0 && bluePlay.b2<0 && bluePlay.b3<0 && bluePlay.b4<0){
-                    bluePlay.b1 = 1;
-                    bluePlayOnBoard.b1 = initial.b;
-                    document.getElementById("b1").parentNode.removeChild(document.getElementById("b1"));
-                    // var img = piece("blue","b1")
-                    // document.getElementById(initial.b.toString()).innerHTML = img;
-                    finalCheck("b1");
-                    dice = true;
-                }
-                break;
-            case 4:
-                if(redPlay.r1<0 && redPlay.r2<0 && redPlay.r3<0 && redPlay.r4<0){
-                    redPlay.r1 = 1;
-                    redPlayOnBoard.r1 = initial.r;
-                    document.getElementById("r1").parentNode.removeChild(document.getElementById("r1"));
-                    // var img = piece("red","r1")
-                    // document.getElementById(initial.r.toString()).innerHTML = img;
-                    finalCheck("r1");
-                    dice = true;
-                }
-                break;
-        }
-    }
+    
 }
 
 const play = (elementID) => {
@@ -86,24 +111,17 @@ const play = (elementID) => {
                      if(greenPlay[elementID] === -1 && diceValue === 6){
                         greenPlay[elementID] = initial.g;
                         currentElement.parentNode.removeChild(currentElement);
-                        // var img = piece("green",elementID)
-                        // document.getElementById(greenPlay[elementID].toString()).innerHTML = img;
                         finalCheck(elementID);
                         dice = true;
                     }else if(greenPlay[elementID]+diceValue<=final.g && greenPlay[elementID]>0){
                         greenPlay[elementID] += diceValue;
                         currentElement.parentNode.removeChild(currentElement);
-                        // var img = piece("green",elementID)
-                        // document.getElementById(greenPlay[elementID].toString()).innerHTML = img;
                         finalCheck(elementID);
                         dice = true;
                     }else if(greenPlay[elementID]+diceValue>final.g && greenPlay[elementID] <= final.g){
                         var temp = greenPlay[elementID] + diceValue - final.g;
                         greenPlay[elementID] = 100+temp;
-                        console.log(`++${greenPlay[elementID]}++`);
                         currentElement.parentNode.removeChild(currentElement);
-                        // var img = piece("green",elementID)
-                        // document.getElementById(greenPlay[elementID].toString()).innerHTML = img;
                         finalCheck(elementID);
                         dice = true;
                     }else if(greenPlay[elementID]>100){
@@ -111,41 +129,19 @@ const play = (elementID) => {
                             greenPlay[elementID] += diceValue;
                             if(greenPlay[elementID]<106){
                                 currentElement.parentNode.removeChild(currentElement);
-                                var img = piece("green",elementID)
-                                document.getElementById(greenPlay[elementID].toString()).innerHTML = img;
+                                finalCheck(elementID);
                                 dice = true;
                             }else{
                                 var counter = 0;
                                 const animFunction = () => {
-                                    switch(counter){
-                                        case 0:
-                                            document.getElementById("home").style.borderLeft = "10px solid #008A47";
-                                            document.getElementById("home").style.borderTop = "10px solid #FFD511";
-                                            document.getElementById("home").style.borderRight = "10px solid #1CA3FF";
-                                            document.getElementById("home").style.borderBottom = "10px solid #FB3021";
-                                            break;
-                                        case 1:
-                                            currentElement.parentNode.removeChild(currentElement);
-                                            var img = piece("green",elementID)
-                                            document.getElementById("home").innerHTML = img;
-                                            break;
-                                        case 2:
-                                            break;
-                                        case 3:
-                                            var img = document.getElementById(elementID);
-                                            img.parentNode.removeChild(img);
-                                            break;
-                                        default:
-                                            document.getElementById("home").style.borderLeft = "50px solid #008A47";
-                                            document.getElementById("home").style.borderTop = "50px solid #FFD511";
-                                            document.getElementById("home").style.borderRight = "50px solid #1CA3FF";
-                                            document.getElementById("home").style.borderBottom = "50px solid #FB3021";
-                                            clearInterval(anim);
-                                            break;
-                                    }
+                                    homeAnimation(counter,"green",elementID,currentElement,anim);
                                     counter++
                                 }
                                 const anim = setInterval(animFunction,500);
+                                diceValue = 7;
+                                piecesInHome.g++;
+                                document.getElementById("player1Score").innerHTML = piecesInHome.g.toString();
+                                dice = true;
                             }
                         }else{
                             var temp = 0;
@@ -168,8 +164,6 @@ const play = (elementID) => {
                         yellowPlay[elementID] = 1;
                         yellowPlayOnBoard[elementID] = initial.y;
                         currentElement.parentNode.removeChild(currentElement);
-                        // var img = piece("yellow",elementID)
-                        // document.getElementById(initial.y.toString()).innerHTML = img;
                         finalCheck(elementID);
                         dice = true;
                     }else if(yellowPlay[elementID]+diceValue<=maxCell && yellowPlay[elementID]>0){
@@ -177,8 +171,6 @@ const play = (elementID) => {
                         const finalVal = (yellowPlay[elementID]>38)?yellowPlay[elementID]-38:14+yellowPlay[elementID];
                         yellowPlayOnBoard[elementID] = finalVal;
                         currentElement.parentNode.removeChild(currentElement);
-                        // var img = piece("yellow",elementID)
-                        // document.getElementById(finalVal.toString()).innerHTML = img;
                         finalCheck(elementID);
                         dice = true;
                     }else if(yellowPlay[elementID]+diceValue>maxCell && yellowPlay[elementID] <= maxCell){
@@ -187,8 +179,6 @@ const play = (elementID) => {
                         const finalVal = 200+temp;
                         yellowPlayOnBoard[elementID] = finalVal;
                         currentElement.parentNode.removeChild(currentElement);
-                        // var img = piece("yellow",elementID)
-                        // document.getElementById(finalVal.toString()).innerHTML = img;
                         finalCheck(elementID);
                         dice = true;
                     }else if(yellowPlay[elementID]>maxCell){
@@ -198,8 +188,6 @@ const play = (elementID) => {
                                 const finalVal = 200+(yellowPlay[elementID]-maxCell);
                                 yellowPlayOnBoard[elementID] = finalVal;
                                 currentElement.parentNode.removeChild(currentElement);
-                                // var img = piece("yellow",elementID)
-                                // document.getElementById(finalVal.toString()).innerHTML = img;
                                 finalCheck(elementID);
                                 dice = true;
                             }else{
@@ -207,40 +195,19 @@ const play = (elementID) => {
                                 const finalVal = 200+(yellowPlay[elementID]-maxCell);
                                 yellowPlayOnBoard[elementID] = finalVal;
                                 const animFunction = () => {
-                                    switch(counter){
-                                        case 0:
-                                            document.getElementById("home").style.borderLeft = "10px solid #008A47";
-                                            document.getElementById("home").style.borderTop = "10px solid #FFD511";
-                                            document.getElementById("home").style.borderRight = "10px solid #1CA3FF";
-                                            document.getElementById("home").style.borderBottom = "10px solid #FB3021";
-                                            break;
-                                        case 1:
-                                            currentElement.parentNode.removeChild(currentElement);
-                                            var img = piece("yellow",elementID)
-                                            document.getElementById("home").innerHTML = img;
-                                            break;
-                                        case 2:
-                                            break;
-                                        case 3:
-                                            var img = document.getElementById(elementID);
-                                            img.parentNode.removeChild(img);
-                                            break;
-                                        default:
-                                            document.getElementById("home").style.borderLeft = "50px solid #008A47";
-                                            document.getElementById("home").style.borderTop = "50px solid #FFD511";
-                                            document.getElementById("home").style.borderRight = "50px solid #1CA3FF";
-                                            document.getElementById("home").style.borderBottom = "50px solid #FB3021";
-                                            clearInterval(anim);
-                                            break;
-                                    }
+                                    homeAnimation(counter,"yellow",elementID,currentElement,anim);
                                     counter++
                                 }
                                 const anim = setInterval(animFunction,500);
+                                diceValue = 7;
+                                piecesInHome.y++;
+                                document.getElementById("player2Score").innerHTML = piecesInHome.y.toString();
+                                dice = true;
                             }
                         }else{
                             var temp = 0;
                             for(var i=1; i<5; i++){
-                                if((yellowPlay[`g${i}`]<0 && diceValue===6) || (yellowPlay[`g${i}`]+diceValue<=maxCell && yellowPlay[`g${i}`]>0) || (yellowPlay[`g${i}`]+diceValue<=homeCell && yellowPlay[`g${i}`]>0)){
+                                if((yellowPlay[`y${i}`]<0 && diceValue===6) || (yellowPlay[`y${i}`]+diceValue<=maxCell && yellowPlay[`y${i}`]>0) || (yellowPlay[`y${i}`]+diceValue<=homeCell && yellowPlay[`y${i}`]>0)){
                                     alert("Please Select Diferent Piece");
                                     temp++;
                                     break;
@@ -258,8 +225,6 @@ const play = (elementID) => {
                         bluePlay[elementID] = 1;
                         bluePlayOnBoard[elementID] = initial.b;
                         currentElement.parentNode.removeChild(currentElement);
-                        // var img = piece("blue",elementID)
-                        // document.getElementById(initial.b.toString()).innerHTML = img;
                         finalCheck(elementID);
                         dice = true;
                     }else if(bluePlay[elementID]+diceValue<=maxCell && bluePlay[elementID]>0){
@@ -267,8 +232,6 @@ const play = (elementID) => {
                         const finalVal = (bluePlay[elementID]>25)?bluePlay[elementID]-25:27+bluePlay[elementID];
                         bluePlayOnBoard[elementID] = finalVal;
                         currentElement.parentNode.removeChild(currentElement);
-                        // var img = piece("blue",elementID)
-                        // document.getElementById(finalVal.toString()).innerHTML = img;
                         finalCheck(elementID);
                         dice = true;
                     }else if(bluePlay[elementID]+diceValue>maxCell && bluePlay[elementID] <= maxCell){
@@ -277,8 +240,6 @@ const play = (elementID) => {
                         const finalVal = 300+temp;
                         bluePlayOnBoard[elementID] = finalVal;
                         currentElement.parentNode.removeChild(currentElement);
-                        // var img = piece("blue",elementID)
-                        // document.getElementById(finalVal.toString()).innerHTML = img;
                         finalCheck(elementID);
                         dice = true;
                     }else if(bluePlay[elementID]>maxCell){
@@ -288,8 +249,6 @@ const play = (elementID) => {
                                 const finalVal = 300+(bluePlay[elementID]-maxCell);
                                 bluePlayOnBoard[elementID] = finalVal;
                                 currentElement.parentNode.removeChild(currentElement);
-                                // var img = piece("blue",elementID)
-                                // document.getElementById(finalVal.toString()).innerHTML = img;
                                 finalCheck(elementID);
                                 dice = true;
                             }else{
@@ -297,40 +256,19 @@ const play = (elementID) => {
                                 const finalVal = 300+(bluePlay[elementID]-maxCell);
                                 bluePlayOnBoard[elementID] = finalVal;
                                 const animFunction = () => {
-                                    switch(counter){
-                                        case 0:
-                                            document.getElementById("home").style.borderLeft = "10px solid #008A47";
-                                            document.getElementById("home").style.borderTop = "10px solid #FFD511";
-                                            document.getElementById("home").style.borderRight = "10px solid #1CA3FF";
-                                            document.getElementById("home").style.borderBottom = "10px solid #FB3021";
-                                            break;
-                                        case 1:
-                                            currentElement.parentNode.removeChild(currentElement);
-                                            var img = piece("blue",elementID)
-                                            document.getElementById("home").innerHTML = img;
-                                            break;
-                                        case 2:
-                                            break;
-                                        case 3:
-                                            var img = document.getElementById(elementID);
-                                            img.parentNode.removeChild(img);
-                                            break;
-                                        default:
-                                            document.getElementById("home").style.borderLeft = "50px solid #008A47";
-                                            document.getElementById("home").style.borderTop = "50px solid #FFD511";
-                                            document.getElementById("home").style.borderRight = "50px solid #1CA3FF";
-                                            document.getElementById("home").style.borderBottom = "50px solid #FB3021";
-                                            clearInterval(anim);
-                                            break;
-                                    }
+                                    homeAnimation(counter,"blue",elementID,currentElement,anim);
                                     counter++
                                 }
                                 const anim = setInterval(animFunction,500);
+                                diceValue = 7;
+                                piecesInHome.b++;
+                                document.getElementById("player3Score").innerHTML = piecesInHome.b.toString();
+                                dice = true;
                             }
                         }else{
                             var temp = 0;
                             for(var i=1; i<5; i++){
-                                if((bluePlay[`g${i}`]<0 && diceValue===6) || (bluePlay[`g${i}`]+diceValue<=maxCell && bluePlay[`g${i}`]>0) || (bluePlay[`g${i}`]+diceValue<=homeCell && bluePlay[`g${i}`]>0)){
+                                if((bluePlay[`b${i}`]<0 && diceValue===6) || (bluePlay[`b${i}`]+diceValue<=maxCell && bluePlay[`b${i}`]>0) || (bluePlay[`b${i}`]+diceValue<=homeCell && bluePlay[`b${i}`]>0)){
                                     alert("Please Select Diferent Piece");
                                     temp++;
                                     break;
@@ -348,8 +286,6 @@ const play = (elementID) => {
                         redPlay[elementID] = 1;
                         redPlayOnBoard[elementID] = initial.r;
                         currentElement.parentNode.removeChild(currentElement);
-                        // var img = piece("red",elementID)
-                        // document.getElementById(initial.r.toString()).innerHTML = img;
                         finalCheck(elementID);
                         dice = true;
                     }else if(redPlay[elementID]+diceValue<=maxCell && redPlay[elementID]>0){
@@ -357,8 +293,6 @@ const play = (elementID) => {
                         const finalVal = (redPlay[elementID]>12)?redPlay[elementID]-12:40+redPlay[elementID];
                         redPlayOnBoard[elementID] = finalVal;
                         currentElement.parentNode.removeChild(currentElement);
-                        // var img = piece("red",elementID)
-                        // document.getElementById(finalVal.toString()).innerHTML = img;
                         finalCheck(elementID);
                         dice = true;
                     }else if(redPlay[elementID]+diceValue>maxCell && redPlay[elementID] <= maxCell){
@@ -367,8 +301,6 @@ const play = (elementID) => {
                         const finalVal = 400+temp;
                         redPlayOnBoard[elementID] = finalVal;
                         currentElement.parentNode.removeChild(currentElement);
-                        // var img = piece("red",elementID)
-                        // document.getElementById(finalVal.toString()).innerHTML = img;
                         finalCheck(elementID);
                         dice = true;
                     }else if(redPlay[elementID]>maxCell){
@@ -378,8 +310,6 @@ const play = (elementID) => {
                                 const finalVal = 400+(redPlay[elementID]-maxCell);
                                 redPlayOnBoard[elementID] = finalVal;
                                 currentElement.parentNode.removeChild(currentElement);
-                                // var img = piece("red",elementID)
-                                // document.getElementById(finalVal.toString()).innerHTML = img;
                                 finalCheck(elementID);
                                 dice = true;
                             }else{
@@ -387,40 +317,19 @@ const play = (elementID) => {
                                 const finalVal = 400+(redPlay[elementID]-maxCell);
                                 redPlayOnBoard[elementID] = finalVal;
                                 const animFunction = () => {
-                                    switch(counter){
-                                        case 0:
-                                            document.getElementById("home").style.borderLeft = "10px solid #008A47";
-                                            document.getElementById("home").style.borderTop = "10px solid #FFD511";
-                                            document.getElementById("home").style.borderRight = "10px solid #1CA3FF";
-                                            document.getElementById("home").style.borderBottom = "10px solid #FB3021";
-                                            break;
-                                        case 1:
-                                            currentElement.parentNode.removeChild(currentElement);
-                                            var img = piece("red",elementID)
-                                            document.getElementById("home").innerHTML = img;
-                                            break;
-                                        case 2:
-                                            break;
-                                        case 3:
-                                            var img = document.getElementById(elementID);
-                                            img.parentNode.removeChild(img);
-                                            break;
-                                        default:
-                                            document.getElementById("home").style.borderLeft = "50px solid #008A47";
-                                            document.getElementById("home").style.borderTop = "50px solid #FFD511";
-                                            document.getElementById("home").style.borderRight = "50px solid #1CA3FF";
-                                            document.getElementById("home").style.borderBottom = "50px solid #FB3021";
-                                            clearInterval(anim);
-                                            break;
-                                    }
+                                    homeAnimation(counter,"red",elementID,currentElement,anim);
                                     counter++
                                 }
                                 const anim = setInterval(animFunction,500);
+                                diceValue = 7;
+                                piecesInHome.r++;
+                                document.getElementById("player4Score").innerHTML = piecesInHome.r.toString();
+                                dice = true;
                             }
                         }else{
                             var temp = 0;
                             for(var i=1; i<5; i++){
-                                if((redPlay[`g${i}`]<0 && diceValue===6) || (redPlay[`g${i}`]+diceValue<=maxCell && redPlay[`g${i}`]>0) || (redPlay[`g${i}`]+diceValue<=homeCell && redPlay[`g${i}`]>0)){
+                                if((redPlay[`r${i}`]<0 && diceValue===6) || (redPlay[`r${i}`]+diceValue<=maxCell && redPlay[`r${i}`]>0) || (redPlay[`r${i}`]+diceValue<=homeCell && redPlay[`r${i}`]>0)){
                                     alert("Please Select Diferent Piece");
                                     temp++;
                                     break;
@@ -461,7 +370,7 @@ const checkAvailability = () => {
                 }
                 break;
     }
-    
+    if(dice) changeName(activePlayerNo);
 }
 
 const isItSafeCell = (eId) => {
@@ -673,6 +582,8 @@ const position = (cell,cellChildrens,color,id) => {
             cell.innerHTML += img;
             cellChildrens[0].style.width = "60%";
             cellChildrens[0].style.height = "60%";
+            cellChildrens[0].style.left = "0";
+            cellChildrens[0].style.top = "0";
             cellChildrens[1].style.width = "60%";
             cellChildrens[1].style.height = "60%";
             cellChildrens[1].style.right = "0";
@@ -683,6 +594,8 @@ const position = (cell,cellChildrens,color,id) => {
             cell.innerHTML += img;
             cellChildrens[0].style.width = "60%";
             cellChildrens[0].style.height = "60%";
+            cellChildrens[0].style.left = "0";
+            cellChildrens[0].style.top = "0";
             cellChildrens[1].style.width = "60%";
             cellChildrens[1].style.height = "60%";
             cellChildrens[1].style.right = "0";
@@ -696,6 +609,8 @@ const position = (cell,cellChildrens,color,id) => {
             cell.innerHTML += img;
             cellChildrens[0].style.width = "60%";
             cellChildrens[0].style.height = "60%";
+            cellChildrens[0].style.left = "0";
+            cellChildrens[0].style.top = "0";
             cellChildrens[1].style.width = "60%";
             cellChildrens[1].style.height = "60%";
             cellChildrens[1].style.right = "0";
@@ -712,6 +627,8 @@ const position = (cell,cellChildrens,color,id) => {
             cell.innerHTML += img;
             cellChildrens[0].style.width = "60%";
             cellChildrens[0].style.height = "60%";
+            cellChildrens[0].style.left = "0";
+            cellChildrens[0].style.top = "0";
             cellChildrens[1].style.width = "60%";
             cellChildrens[1].style.height = "60%";
             cellChildrens[1].style.right = "0";
@@ -730,6 +647,10 @@ const position = (cell,cellChildrens,color,id) => {
         case 5:
             var img = piece(color,id);
             cell.innerHTML += img;
+            cellChildrens[0].style.width = "60%";
+            cellChildrens[0].style.height = "60%";
+            cellChildrens[0].style.left = "0";
+            cellChildrens[0].style.top = "0";
             cellChildrens[1].style.bottom = "20%";
             cellChildrens[1].style.left = "0";
             cellChildrens[1].style.removeProperty('right')
@@ -744,6 +665,79 @@ const position = (cell,cellChildrens,color,id) => {
             cellChildrens[5].style.height = "60%";
             cellChildrens[5].style.bottom = "0";
             cellChildrens[5].style.right = "0";
+            break;
+    }
+}
+
+const changeName = (player) => {
+    if(diceValue<6){
+        switch((player==4)?1:player+1){
+            case 1:
+                playerName.innerHTML = "Green";
+                break;
+            case 2:
+                playerName.innerHTML = "Yellow";
+                break;
+            case 3:
+                playerName.innerHTML = "Blue";
+                break;
+            case 4:
+                playerName.innerHTML = "Red";
+                break;
+        }
+    }
+    rollMe.style.visibility = "visible";
+}
+
+const homeAnimation = (counter,color,elementID,currentElement,anim) => {
+    switch(counter){
+        case 0:
+            document.getElementById("home").style.borderLeft = "10px solid #008A47";
+            document.getElementById("home").style.borderTop = "10px solid #FFD511";
+            document.getElementById("home").style.borderRight = "10px solid #1CA3FF";
+            document.getElementById("home").style.borderBottom = "10px solid #FB3021";
+            break;
+        case 1:
+            currentElement.parentNode.removeChild(currentElement);
+            var img = piece(color,elementID)
+            document.getElementById("home").innerHTML = img;
+            break;
+        case 2:
+            break;
+        case 3:
+            var img = document.getElementById(elementID);
+            img.parentNode.removeChild(img);
+            break;
+        default:
+            document.getElementById("home").style.borderLeft = "50px solid #008A47";
+            document.getElementById("home").style.borderTop = "50px solid #FFD511";
+            document.getElementById("home").style.borderRight = "50px solid #1CA3FF";
+            document.getElementById("home").style.borderBottom = "50px solid #FB3021";
+            clearInterval(anim);
+            break;
+    }
+}
+
+const diceAnimation = (counter) => {
+    var diceImg = document.getElementById("dice");
+    switch(counter){
+        case 1:
+            diceImg.src = "img/dice1.png"
+            break;
+        case 2:
+        diceImg.src = "img/dice2.png"
+            break;
+        case 3:
+        diceImg.src = "img/dice3.png"
+            break;
+        case 4:
+        diceImg.src = "img/dice4.png"
+            break;
+        case 5:
+        diceImg.src = "img/dice5.png"
+            break;
+        case 6:
+        diceImg.src = "img/dice6.png"
             break;
     }
 }
@@ -770,19 +764,21 @@ const finalCheck = (id) =>{
                 var cell = document.getElementById(redPlayOnBoard[id].toString());
                 var cellChildrens = cell.children;
                 position(cell,cellChildrens,"red",id);
-                break;
-                                    
+                break;                  
         }
+        changeName(activePlayerNo);
     }else if(isItSafeCell(id) && !isSomeoneInside(id)){
         var temp = {g:"green",y:"yellow",b:"blue",r:"red"};
         var img = piece(temp[id.substr(0, 1)],id)
         var finalVal = (id.substr(0, 1)==="g")?greenPlay[id]:((id.substr(0, 1)==="y")?yellowPlayOnBoard[id]:((id.substr(0, 1)==="b")?bluePlayOnBoard[id]:redPlayOnBoard[id]))
         document.getElementById(finalVal.toString()).innerHTML = img;
+        changeName(activePlayerNo);
     }else if(!isItSafeCell(id) && !isSomeoneInside(id)){
         var temp = {g:"green",y:"yellow",b:"blue",r:"red"};
         var img = piece(temp[id.substr(0, 1)],id)
         var finalVal = (id.substr(0, 1)==="g")?greenPlay[id]:((id.substr(0, 1)==="y")?yellowPlayOnBoard[id]:((id.substr(0, 1)==="b")?bluePlayOnBoard[id]:redPlayOnBoard[id]))
         document.getElementById(finalVal.toString()).innerHTML = img;
+        changeName(activePlayerNo);
     }else if(!isItSafeCell(id) && isSomeoneInside(id)){
         if(isItMe(id)){
             switch(id.substr(0, 1)){
@@ -790,6 +786,7 @@ const finalCheck = (id) =>{
                     var cell = document.getElementById(greenPlay[id].toString());
                     var cellChildrens = cell.children;
                     position(cell,cellChildrens,"green",id);
+                    break;
                 case 'y':
                     var cell = document.getElementById(yellowPlayOnBoard[id].toString());
                     var cellChildrens = cell.children;
@@ -895,5 +892,6 @@ const finalCheck = (id) =>{
                 cellChildrens[4].style.left = "20%";
             }
         }
+        changeName(activePlayerNo);
     }
 }
