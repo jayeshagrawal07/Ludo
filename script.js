@@ -1,5 +1,7 @@
-
+var winner = 1;
+var gameIsActive = true;
 var playerNo = [1,2,3,4];
+var playerLength = playerNo.length;
 var piecesInHome = {g:0, y:0, b:0, r:0};
 var activePlayerNo = 0;
 var dice = true;
@@ -21,8 +23,9 @@ var threeSixCheck = [0,0,0];
 var piece = (color,id) => {return `<img src="img/${color}.png" id="${id}" onclick="play(this.id)" style="width: 100%;height: 100%;position: absolute;" alt=""/>`}
 var playerName = document.getElementById("playerName");
 playerName.innerHTML = "Green";
+var tempa = -1;
 const playDice = () => {
-    if(dice){
+    if(dice && gameIsActive){
         rollMe.style.visibility = "hidden";
         var counter = 1;
         const animFunction = () => {
@@ -30,7 +33,14 @@ const playDice = () => {
             counter=(counter<6)?counter+1:1;
         }
         const anim = setInterval(animFunction,100);
-        activePlayerNo = (diceValue===0)?1:((diceValue===6 || diceValue===7)?activePlayerNo:(((activePlayerNo+1)>4)?1:activePlayerNo+1));
+        if(playerLength===playerNo.length && !(diceValue===6 || diceValue===7)){
+            tempa = (tempa<3)?tempa+1:0;
+        }else if((activePlayerNo === 4 || (activePlayerNo === 3 && playerNo.length===3)) && !(diceValue===6 || diceValue===7)){
+            tempa=0;
+        }
+        playerLength = playerNo.length;
+        // activePlayerNo = (diceValue===0)?1:((diceValue===6 || diceValue===7)?activePlayerNo:(((activePlayerNo+1)>4)?1:activePlayerNo+1));
+        activePlayerNo = (diceValue===0)?1:((diceValue===6 || diceValue===7)?activePlayerNo:playerNo[tempa]);
         diceValue = Math.floor((Math.random()*6)+1)
         if(diceValue===6){
             if(activePlayerNo===threeSixCheck[0]){
@@ -47,6 +57,10 @@ const playDice = () => {
                 threeSixCheck[1] = diceValue;
                 threeSixCheck[2] = 0;
             }
+        }else{
+            threeSixCheck[0] = 0;
+            threeSixCheck[1] = 0;
+            threeSixCheck[2] = 0;
         }
         setTimeout(()=>{
             clearInterval(anim);
@@ -141,6 +155,21 @@ const play = (elementID) => {
                                 diceValue = 7;
                                 piecesInHome.g++;
                                 document.getElementById("player1Score").innerHTML = piecesInHome.g.toString();
+                                if(piecesInHome.g===4){
+                                    document.getElementById("player1Score").innerHTML = (winner===1)?"1st":((winner===2)?"2nd":((winner===3)?"3rd":"4th"));
+                                    if(winner===3){
+                                        var lastWinner = (piecesInHome.g<4)?"g1":((piecesInHome.y<4)?"y2":((piecesInHome.b<4)?"b3":"r4"));
+                                        document.getElementById(`player${lastWinner.substr(1)}Score`).innerHTML = "4th";
+                                        gameIsActive = false
+                                    }else{
+                                        winner++;
+                                    }
+                                }
+                                if(gameIsActive){
+                                    var winnerBeforeMe = (piecesInHome.g===4)?"g":((piecesInHome.y===4)?"y":((piecesInHome.b===4)?"b":((piecesInHome.r===4)?"r":"")))
+                                    playerNo = (winner===2)?[2,3,4]:((winnerBeforeMe === "y")?[3,4]:((winnerBeforeMe === "b")?[2,4]:[2,3]));
+                                    diceValue = 2;
+                                }
                                 dice = true;
                             }
                         }else{
@@ -202,6 +231,21 @@ const play = (elementID) => {
                                 diceValue = 7;
                                 piecesInHome.y++;
                                 document.getElementById("player2Score").innerHTML = piecesInHome.y.toString();
+                                if(piecesInHome.y===4){
+                                    document.getElementById("player2Score").innerHTML = (winner===1)?"1st":((winner===2)?"2nd":((winner===3)?"3rd":"4th"));
+                                    if(winner===3){
+                                        var lastWinner = (piecesInHome.g<4)?"g1":((piecesInHome.y<4)?"y2":((piecesInHome.b<4)?"b3":"r4"));
+                                        document.getElementById(`player${lastWinner.substr(1)}Score`).innerHTML = "4th";
+                                        gameIsActive = false
+                                    }else{
+                                        winner++;
+                                    }
+                                }
+                                if(gameIsActive){
+                                    var winnerBeforeMe = (piecesInHome.g===4)?"g":((piecesInHome.y===4)?"y":((piecesInHome.b===4)?"b":((piecesInHome.r===4)?"r":"")))
+                                    playerNo = (winner===2)?[1,3,4]:((winnerBeforeMe === "g")?[3,4]:((winnerBeforeMe === "b")?[1,4]:[1,3]));
+                                    diceValue = 2;
+                                }
                                 dice = true;
                             }
                         }else{
@@ -263,6 +307,21 @@ const play = (elementID) => {
                                 diceValue = 7;
                                 piecesInHome.b++;
                                 document.getElementById("player3Score").innerHTML = piecesInHome.b.toString();
+                                if(piecesInHome.b===4){
+                                    document.getElementById("player3Score").innerHTML = (winner===1)?"1st":((winner===2)?"2nd":((winner===3)?"3rd":"4th"));
+                                    if(winner===3){
+                                        var lastWinner = (piecesInHome.g<4)?"g1":((piecesInHome.y<4)?"y2":((piecesInHome.b<4)?"b3":"r4"));
+                                        document.getElementById(`player${lastWinner.substr(1)}Score`).innerHTML = "4th";
+                                        gameIsActive = false
+                                    }else{
+                                        winner++;
+                                    }
+                                }
+                                if(gameIsActive){
+                                    var winnerBeforeMe = (piecesInHome.g===4)?"g":((piecesInHome.y===4)?"y":((piecesInHome.b===4)?"b":((piecesInHome.r===4)?"r":"")))
+                                    playerNo = (winner===2)?[1,2,4]:((winnerBeforeMe === "g")?[2,4]:((winnerBeforeMe === "y")?[1,4]:[1,2]));
+                                    diceValue = 2;
+                                }
                                 dice = true;
                             }
                         }else{
@@ -324,6 +383,21 @@ const play = (elementID) => {
                                 diceValue = 7;
                                 piecesInHome.r++;
                                 document.getElementById("player4Score").innerHTML = piecesInHome.r.toString();
+                                if(piecesInHome.r===4){
+                                    document.getElementById("player4Score").innerHTML = (winner===1)?"1st":((winner===2)?"2nd":((winner===3)?"3rd":"4th"));
+                                    if(winner===3){
+                                        var lastWinner = (piecesInHome.g<4)?"g1":((piecesInHome.y<4)?"y2":((piecesInHome.b<4)?"b3":"r4"));
+                                        document.getElementById(`player${lastWinner.substr(1)}Score`).innerHTML = "4th";
+                                        gameIsActive = false
+                                    }else{
+                                        winner++;
+                                    }
+                                }
+                                if(gameIsActive){
+                                    var winnerBeforeMe = (piecesInHome.g===4)?"g":((piecesInHome.y===4)?"y":((piecesInHome.b===4)?"b":((piecesInHome.r===4)?"r":"")))
+                                    playerNo = (winner===2)?[1,2,3]:((winnerBeforeMe === "g")?[2,3]:((winnerBeforeMe === "y")?[1,3]:[1,2]));
+                                    diceValue = 2;
+                                }
                                 dice = true;
                             }
                         }else{
