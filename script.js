@@ -39,33 +39,34 @@ const playDice = () => {
             tempa=0;
         }
         playerLength = playerNo.length;
-        // activePlayerNo = (diceValue===0)?1:((diceValue===6 || diceValue===7)?activePlayerNo:(((activePlayerNo+1)>4)?1:activePlayerNo+1));
         activePlayerNo = (diceValue===0)?1:((diceValue===6 || diceValue===7)?activePlayerNo:playerNo[tempa]);
         diceValue = Math.floor((Math.random()*6)+1)
-        if(diceValue===6){
-            if(activePlayerNo===threeSixCheck[0]){
-                if(threeSixCheck[1]===6&&threeSixCheck[2]===6){
-                    dice=true;
-                    diceValue = 2;
-                    changeName(activePlayerNo);
-                    alert("You got three sixes in row");
-                }else{
-                    threeSixCheck[2] = diceValue;
-                }
-            }else{
-                threeSixCheck[0] = activePlayerNo;
-                threeSixCheck[1] = diceValue;
-                threeSixCheck[2] = 0;
-            }
-        }else{
-            threeSixCheck[0] = 0;
-            threeSixCheck[1] = 0;
-            threeSixCheck[2] = 0;
-        }
         setTimeout(()=>{
             clearInterval(anim);
             var diceImg = document.getElementById("dice");
             diceImg.src = `img/dice${diceValue}.png`;
+            if(diceValue===6){
+                if(activePlayerNo===threeSixCheck[0]){
+                    if(threeSixCheck[1]===6&&threeSixCheck[2]===6){
+                        diceValue = 2;
+                        changeName(activePlayerNo);
+                        diceImg.src = `img/dice6.png`;
+                        alert("You got three sixes in row");
+                        dice=true;
+                        return;
+                    }else{
+                        threeSixCheck[2] = diceValue;
+                    }
+                }else{
+                    threeSixCheck[0] = activePlayerNo;
+                    threeSixCheck[1] = diceValue;
+                    threeSixCheck[2] = 0;
+                }
+            }else{
+                threeSixCheck[0] = 0;
+                threeSixCheck[1] = 0;
+                threeSixCheck[2] = 0;
+            }
             checkAvailability();
             if(diceValue===6){
                 switch(activePlayerNo){
@@ -106,7 +107,7 @@ const playDice = () => {
                         break;
                 }
             }
-        },2000);
+        },1000);
         dice = false;
     }
     
@@ -164,11 +165,11 @@ const play = (elementID) => {
                                     }else{
                                         winner++;
                                     }
-                                }
-                                if(gameIsActive){
-                                    var winnerBeforeMe = (piecesInHome.g===4)?"g":((piecesInHome.y===4)?"y":((piecesInHome.b===4)?"b":((piecesInHome.r===4)?"r":"")))
-                                    playerNo = (winner===2)?[2,3,4]:((winnerBeforeMe === "y")?[3,4]:((winnerBeforeMe === "b")?[2,4]:[2,3]));
-                                    diceValue = 2;
+                                    if(gameIsActive){
+                                        var winnerBeforeMe = (piecesInHome.g===4)?"g":((piecesInHome.y===4)?"y":((piecesInHome.b===4)?"b":((piecesInHome.r===4)?"r":"")))
+                                        playerNo = (winner===2)?[2,3,4]:((winnerBeforeMe === "y")?[3,4]:((winnerBeforeMe === "b")?[2,4]:[2,3]));
+                                        diceValue = 2;
+                                    }
                                 }
                                 dice = true;
                             }
@@ -240,11 +241,11 @@ const play = (elementID) => {
                                     }else{
                                         winner++;
                                     }
-                                }
-                                if(gameIsActive){
-                                    var winnerBeforeMe = (piecesInHome.g===4)?"g":((piecesInHome.y===4)?"y":((piecesInHome.b===4)?"b":((piecesInHome.r===4)?"r":"")))
-                                    playerNo = (winner===2)?[1,3,4]:((winnerBeforeMe === "g")?[3,4]:((winnerBeforeMe === "b")?[1,4]:[1,3]));
-                                    diceValue = 2;
+                                    if(gameIsActive){
+                                        var winnerBeforeMe = (piecesInHome.g===4)?"g":((piecesInHome.y===4)?"y":((piecesInHome.b===4)?"b":((piecesInHome.r===4)?"r":"")))
+                                        playerNo = (winner===2)?[1,3,4]:((winnerBeforeMe === "g")?[3,4]:((winnerBeforeMe === "b")?[1,4]:[1,3]));
+                                        diceValue = 2;
+                                    }
                                 }
                                 dice = true;
                             }
@@ -316,11 +317,11 @@ const play = (elementID) => {
                                     }else{
                                         winner++;
                                     }
-                                }
-                                if(gameIsActive){
-                                    var winnerBeforeMe = (piecesInHome.g===4)?"g":((piecesInHome.y===4)?"y":((piecesInHome.b===4)?"b":((piecesInHome.r===4)?"r":"")))
-                                    playerNo = (winner===2)?[1,2,4]:((winnerBeforeMe === "g")?[2,4]:((winnerBeforeMe === "y")?[1,4]:[1,2]));
-                                    diceValue = 2;
+                                    if(gameIsActive){
+                                        var winnerBeforeMe = (piecesInHome.g===4)?"g":((piecesInHome.y===4)?"y":((piecesInHome.b===4)?"b":((piecesInHome.r===4)?"r":"")))
+                                        playerNo = (winner===2)?[1,2,4]:((winnerBeforeMe === "g")?[2,4]:((winnerBeforeMe === "y")?[1,4]:[1,2]));
+                                        diceValue = 2;
+                                    }
                                 }
                                 dice = true;
                             }
@@ -392,11 +393,11 @@ const play = (elementID) => {
                                     }else{
                                         winner++;
                                     }
-                                }
-                                if(gameIsActive){
-                                    var winnerBeforeMe = (piecesInHome.g===4)?"g":((piecesInHome.y===4)?"y":((piecesInHome.b===4)?"b":((piecesInHome.r===4)?"r":"")))
-                                    playerNo = (winner===2)?[1,2,3]:((winnerBeforeMe === "g")?[2,3]:((winnerBeforeMe === "y")?[1,3]:[1,2]));
-                                    diceValue = 2;
+                                    if(gameIsActive){
+                                        var winnerBeforeMe = (piecesInHome.g===4)?"g":((piecesInHome.y===4)?"y":((piecesInHome.b===4)?"b":((piecesInHome.r===4)?"r":"")))
+                                        playerNo = (winner===2)?[1,2,3]:((winnerBeforeMe === "g")?[2,3]:((winnerBeforeMe === "y")?[1,3]:[1,2]));
+                                        diceValue = 2;
+                                    }
                                 }
                                 dice = true;
                             }
@@ -799,19 +800,19 @@ const diceAnimation = (counter) => {
             diceImg.src = "img/dice1.png"
             break;
         case 2:
-        diceImg.src = "img/dice2.png"
+        diceImg.src = "img/dice4.png"
             break;
         case 3:
-        diceImg.src = "img/dice3.png"
+        diceImg.src = "img/dice6.png"
             break;
         case 4:
-        diceImg.src = "img/dice4.png"
+        diceImg.src = "img/dice2.png"
             break;
         case 5:
         diceImg.src = "img/dice5.png"
             break;
         case 6:
-        diceImg.src = "img/dice6.png"
+        diceImg.src = "img/dice3.png"
             break;
     }
 }
