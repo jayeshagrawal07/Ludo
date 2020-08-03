@@ -24,6 +24,12 @@ var piece = (color,id) => {return `<img src="img/${color}.png" id="${id}" onclic
 var playerName = document.getElementById("playerName");
 playerName.innerHTML = "Green";
 var tempa = -1;
+
+const diceRoll = () => {
+    var diceFaces = [1,2,6,3,4,6,5,6];
+    return diceFaces[Math.floor(Math.random() * diceFaces.length)];
+}
+
 const playDice = () => {
     if(dice && gameIsActive){
         rollMe.style.visibility = "hidden";
@@ -40,7 +46,8 @@ const playDice = () => {
         }
         playerLength = playerNo.length;
         activePlayerNo = (diceValue===0)?1:((diceValue===6 || diceValue===7)?activePlayerNo:playerNo[tempa]);
-        diceValue = Math.floor((Math.random()*6)+1)
+        // diceValue = Math.floor((Math.random()*6)+1)
+        diceValue = diceRoll();
         setTimeout(()=>{
             clearInterval(anim);
             var diceImg = document.getElementById("dice");
@@ -111,8 +118,8 @@ const playDice = () => {
         dice = false;
     }
     
-    console.log(activePlayerNo);
-    console.log(diceValue);
+    // console.log(activePlayerNo);
+    // console.log(diceValue);
     
 }
 
