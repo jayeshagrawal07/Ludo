@@ -56,7 +56,7 @@ const playDice = () => {
                 if(activePlayerNo===threeSixCheck[0]){
                     if(threeSixCheck[1]===6&&threeSixCheck[2]===6){
                         diceValue = 2;
-                        changeName(activePlayerNo);
+                        changeName(playerNo);
                         diceImg.src = `img/dice6.png`;
                         alert("You got three sixes in row");
                         dice=true;
@@ -140,13 +140,14 @@ const play = (elementID) => {
                         currentElement.parentNode.removeChild(currentElement);
                         finalCheck(elementID);
                         dice = true;
-                    }else if(greenPlay[elementID]+diceValue>final.g && greenPlay[elementID] <= final.g){
+                    }else if(greenPlay[elementID]+diceValue>final.g && greenPlay[elementID] <= final.g && greenPlay[elementID]+diceValue!==(final.g+6)){
                         var temp = greenPlay[elementID] + diceValue - final.g;
                         greenPlay[elementID] = 100+temp;
                         currentElement.parentNode.removeChild(currentElement);
                         finalCheck(elementID);
                         dice = true;
-                    }else if(greenPlay[elementID]>100){
+                    }else if(greenPlay[elementID]>100 || (greenPlay[elementID]+diceValue===(final.g+6))){
+                        greenPlay[elementID] = (greenPlay[elementID]+diceValue===(final.g+6))?100:greenPlay[elementID];
                         if(greenPlay[elementID]+diceValue <=106){
                             greenPlay[elementID] += diceValue;
                             if(greenPlay[elementID]<106){
@@ -176,6 +177,7 @@ const play = (elementID) => {
                                         var winnerBeforeMe = (piecesInHome.g===4)?"g":((piecesInHome.y===4)?"y":((piecesInHome.b===4)?"b":((piecesInHome.r===4)?"r":"")))
                                         playerNo = (winner===2)?[2,3,4]:((winnerBeforeMe === "y")?[3,4]:((winnerBeforeMe === "b")?[2,4]:[2,3]));
                                         diceValue = 2;
+                                        changeNameAfterWin(playerNo);
                                     }
                                 }
                                 dice = true;
@@ -191,6 +193,8 @@ const play = (elementID) => {
                             }
                             if(temp===0){
                                 alert("There is no valid space available");
+                                diceValue = 2;
+                                changeName(playerNo);
                                 dice = true;
                             }
                         }
@@ -210,7 +214,7 @@ const play = (elementID) => {
                         currentElement.parentNode.removeChild(currentElement);
                         finalCheck(elementID);
                         dice = true;
-                    }else if(yellowPlay[elementID]+diceValue>maxCell && yellowPlay[elementID] <= maxCell){
+                    }else if(yellowPlay[elementID]+diceValue>maxCell && yellowPlay[elementID] <= maxCell && (yellowPlay[elementID]+diceValue!==(maxCell+6))){
                         var temp = yellowPlay[elementID] + diceValue - maxCell;
                         yellowPlay[elementID] = yellowPlay[elementID] + diceValue;
                         const finalVal = 200+temp;
@@ -218,7 +222,7 @@ const play = (elementID) => {
                         currentElement.parentNode.removeChild(currentElement);
                         finalCheck(elementID);
                         dice = true;
-                    }else if(yellowPlay[elementID]>maxCell){
+                    }else if(yellowPlay[elementID]>maxCell || yellowPlay[elementID]+diceValue===(maxCell+6)){
                         if(yellowPlay[elementID]+diceValue <=homeCell){
                             yellowPlay[elementID] += diceValue;
                             if(yellowPlay[elementID]<homeCell){
@@ -252,6 +256,7 @@ const play = (elementID) => {
                                         var winnerBeforeMe = (piecesInHome.g===4)?"g":((piecesInHome.y===4)?"y":((piecesInHome.b===4)?"b":((piecesInHome.r===4)?"r":"")))
                                         playerNo = (winner===2)?[1,3,4]:((winnerBeforeMe === "g")?[3,4]:((winnerBeforeMe === "b")?[1,4]:[1,3]));
                                         diceValue = 2;
+                                        changeNameAfterWin(playerNo);
                                     }
                                 }
                                 dice = true;
@@ -267,6 +272,8 @@ const play = (elementID) => {
                             }
                             if(temp===0){
                                 alert("There is no valid space available");
+                                diceValue = 2;
+                                changeName(playerNo);
                                 dice = true;
                             }
                         }
@@ -286,7 +293,7 @@ const play = (elementID) => {
                         currentElement.parentNode.removeChild(currentElement);
                         finalCheck(elementID);
                         dice = true;
-                    }else if(bluePlay[elementID]+diceValue>maxCell && bluePlay[elementID] <= maxCell){
+                    }else if(bluePlay[elementID]+diceValue>maxCell && bluePlay[elementID] <= maxCell && bluePlay[elementID]+diceValue!==(maxCell+6)){
                         var temp = bluePlay[elementID] + diceValue - maxCell;
                         bluePlay[elementID] = bluePlay[elementID] + diceValue;
                         const finalVal = 300+temp;
@@ -294,7 +301,7 @@ const play = (elementID) => {
                         currentElement.parentNode.removeChild(currentElement);
                         finalCheck(elementID);
                         dice = true;
-                    }else if(bluePlay[elementID]>maxCell){
+                    }else if(bluePlay[elementID]>maxCell || bluePlay[elementID]+diceValue===(maxCell+6)){
                         if(bluePlay[elementID]+diceValue <=homeCell){
                             bluePlay[elementID] += diceValue;
                             if(bluePlay[elementID]<homeCell){
@@ -328,6 +335,7 @@ const play = (elementID) => {
                                         var winnerBeforeMe = (piecesInHome.g===4)?"g":((piecesInHome.y===4)?"y":((piecesInHome.b===4)?"b":((piecesInHome.r===4)?"r":"")))
                                         playerNo = (winner===2)?[1,2,4]:((winnerBeforeMe === "g")?[2,4]:((winnerBeforeMe === "y")?[1,4]:[1,2]));
                                         diceValue = 2;
+                                        changeNameAfterWin(playerNo);
                                     }
                                 }
                                 dice = true;
@@ -343,6 +351,8 @@ const play = (elementID) => {
                             }
                             if(temp===0){
                                 alert("There is no valid space available");
+                                diceValue = 2;
+                                changeName(playerNo);
                                 dice = true;
                             }
                         }
@@ -362,7 +372,7 @@ const play = (elementID) => {
                         currentElement.parentNode.removeChild(currentElement);
                         finalCheck(elementID);
                         dice = true;
-                    }else if(redPlay[elementID]+diceValue>maxCell && redPlay[elementID] <= maxCell){
+                    }else if(redPlay[elementID]+diceValue>maxCell && redPlay[elementID] <= maxCell && redPlay[elementID]+diceValue!==(maxCell+6)){
                         var temp = redPlay[elementID] + diceValue - maxCell;
                         redPlay[elementID] = redPlay[elementID] + diceValue;
                         const finalVal = 400+temp;
@@ -370,7 +380,7 @@ const play = (elementID) => {
                         currentElement.parentNode.removeChild(currentElement);
                         finalCheck(elementID);
                         dice = true;
-                    }else if(redPlay[elementID]>maxCell){
+                    }else if(redPlay[elementID]>maxCell || redPlay[elementID]+diceValue!==(maxCell+6)){
                         if(redPlay[elementID]+diceValue <=homeCell){
                             redPlay[elementID] += diceValue;
                             if(redPlay[elementID]<homeCell){
@@ -404,6 +414,7 @@ const play = (elementID) => {
                                         var winnerBeforeMe = (piecesInHome.g===4)?"g":((piecesInHome.y===4)?"y":((piecesInHome.b===4)?"b":((piecesInHome.r===4)?"r":"")))
                                         playerNo = (winner===2)?[1,2,3]:((winnerBeforeMe === "g")?[2,3]:((winnerBeforeMe === "y")?[1,3]:[1,2]));
                                         diceValue = 2;
+                                        changeNameAfterWin(playerNo);
                                     }
                                 }
                                 dice = true;
@@ -419,6 +430,8 @@ const play = (elementID) => {
                             }
                             if(temp===0){
                                 alert("There is no valid space available");
+                                diceValue = 2;
+                                changeName(playerNo);
                                 dice = true;
                             }
                         }
@@ -452,7 +465,7 @@ const checkAvailability = () => {
                 }
                 break;
     }
-    if(dice) changeName(activePlayerNo);
+    if(dice) changeName(playerNo);
 }
 
 const isItSafeCell = (eId) => {
@@ -752,22 +765,26 @@ const position = (cell,cellChildrens,color,id) => {
 }
 
 const changeName = (player) => {
+    var temp = tempa;
     if(diceValue<6){
-        switch((player==4)?1:player+1){
-            case 1:
-                playerName.innerHTML = "Green";
-                break;
-            case 2:
-                playerName.innerHTML = "Yellow";
-                break;
-            case 3:
-                playerName.innerHTML = "Blue";
-                break;
-            case 4:
-                playerName.innerHTML = "Red";
-                break;
+        if((player.length === 4 && temp === 3) || (player.length === 3 && temp === 2) || (player.length === 2 && temp === 1)){
+            temp = 0;
+        }else{
+            temp++;
         }
+        playerName.innerHTML = ((player[temp]===1)?"Green":((player[temp]===2)?"Yellow":((player[temp]===3)?"Blue":"Red")));
     }
+    rollMe.style.visibility = "visible";
+}
+
+const changeNameAfterWin = (playersArray) => {
+    var temp = tempa;
+    if((temp === 3 && playersArray.length===3) || (temp === 2 && playersArray.length===2)){
+        temp=0;
+    }else{
+        temp++;
+    }
+    playerName.innerHTML = ((playersArray[temp]===1)?"Green":((playersArray[temp]===2)?"Yellow":((playersArray[temp]===3)?"Blue":"Red")));
     rollMe.style.visibility = "visible";
 }
 
@@ -848,19 +865,19 @@ const finalCheck = (id) =>{
                 position(cell,cellChildrens,"red",id);
                 break;                  
         }
-        changeName(activePlayerNo);
+        changeName(playerNo);
     }else if(isItSafeCell(id) && !isSomeoneInside(id)){
         var temp = {g:"green",y:"yellow",b:"blue",r:"red"};
         var img = piece(temp[id.substr(0, 1)],id)
         var finalVal = (id.substr(0, 1)==="g")?greenPlay[id]:((id.substr(0, 1)==="y")?yellowPlayOnBoard[id]:((id.substr(0, 1)==="b")?bluePlayOnBoard[id]:redPlayOnBoard[id]))
         document.getElementById(finalVal.toString()).innerHTML = img;
-        changeName(activePlayerNo);
+        changeName(playerNo);
     }else if(!isItSafeCell(id) && !isSomeoneInside(id)){
         var temp = {g:"green",y:"yellow",b:"blue",r:"red"};
         var img = piece(temp[id.substr(0, 1)],id)
         var finalVal = (id.substr(0, 1)==="g")?greenPlay[id]:((id.substr(0, 1)==="y")?yellowPlayOnBoard[id]:((id.substr(0, 1)==="b")?bluePlayOnBoard[id]:redPlayOnBoard[id]))
         document.getElementById(finalVal.toString()).innerHTML = img;
-        changeName(activePlayerNo);
+        changeName(playerNo);
     }else if(!isItSafeCell(id) && isSomeoneInside(id)){
         if(isItMe(id)){
             switch(id.substr(0, 1)){
@@ -974,6 +991,6 @@ const finalCheck = (id) =>{
                 cellChildrens[4].style.left = "20%";
             }
         }
-        changeName(activePlayerNo);
+        changeName(playerNo);
     }
 }
