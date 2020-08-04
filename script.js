@@ -812,6 +812,7 @@ const homeAnimation = (counter,color,elementID,currentElement,anim) => {
             document.getElementById("home").style.borderTop = "50px solid #FFD511";
             document.getElementById("home").style.borderRight = "50px solid #1CA3FF";
             document.getElementById("home").style.borderBottom = "50px solid #FB3021";
+            rollMe.style.visibility = "visible";
             clearInterval(anim);
             break;
     }
