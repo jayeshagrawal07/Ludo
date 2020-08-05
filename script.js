@@ -380,7 +380,7 @@ const play = (elementID) => {
                         currentElement.parentNode.removeChild(currentElement);
                         finalCheck(elementID);
                         dice = true;
-                    }else if(redPlay[elementID]>maxCell || redPlay[elementID]+diceValue!==(maxCell+6)){
+                    }else if(redPlay[elementID]>maxCell || redPlay[elementID]+diceValue===(maxCell+6)){
                         if(redPlay[elementID]+diceValue <=homeCell){
                             redPlay[elementID] += diceValue;
                             if(redPlay[elementID]<homeCell){
